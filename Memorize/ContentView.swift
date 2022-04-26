@@ -8,47 +8,50 @@
 import SwiftUI
 
 struct ContentView: View {
-     var emojis = ["train emoji", "car emoji", "boat emoji", "mountain emoji"]
-     @State var emojiCount = 2
+     var emojis = ["✈️", "💄", "🎃", "🐋", "🦞", "🍅", "🥬", "🔦", "📪", "📦", "🕰", "🏔", "🚗", "🪚", "🐕", "🐈", "🚶🏼‍♀️", "🎉", "🏓", "💻", "🌓", "🌽", "💀", "🏝", "🐑", "🪐", "🧩"]
+    @State var emojiCount = 24
 
     var body: some View {
         VStack {
-            LazyVGrid(columns: [GridItems(), GridItems(), GridItems()]) {
-                ForEach(emojis[0..<emojiCount], id: \.self) { emoji
-                    CardView(content: emoji)
-                })
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+                    ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
+                        CardView(content: emoji)
+                            .aspectRatio(2/3, contentMode: .fit)
+                    }
+                }
             }
+            .foregroundColor(.red)
+            Spacer()
             HStack {
                 remove
                 Spacer()
                 add
             }
+            .font(.largeTitle)
             .padding(.horizontal)
-
         }
         .padding(.horizontal)
     }
 
     var remove: some View {
-        Button(action: {
-            emojiCount -= 1
-        }, label: {
-            VStack {
-                Text("Remove")
-                Text("Card")
+        Button {
+            if emojiCount > 1 {
+                emojiCount -= 1
             }
-        })
+        } label: {
+            Image(systemName: "minus.circle")
+        }
     }
 
     var add: some View {
-        Button(action: {
-            emojiCount += 1
-        }, label: {
-            VStack {
-                Text("Add")
-                Text("Card")
+        Button {
+            if emojiCount < emojis.count {
+                emojiCount += 1
             }
-        })
+        } label: {
+            Image(systemName: "plus.circle")
+        }
     }
 }
 
@@ -62,11 +65,10 @@ struct CardView: View {
             let shape = RoundedRectangle(cornerRadius: 20)
             if isFaceUp {
                 shape.fill().foregroundColor(.white)
-                shape.stroke(lineWidth: 3)
+                shape.strokeBorder(lineWidth: 3)
                 Text(content).font(.largeTitle)
             } else {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill()
+                shape.fill()
             }
         }
         .onTapGesture {
@@ -75,12 +77,13 @@ struct CardView: View {
     }
 }
 
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .preferredColorScheme(.dark)
+            .previewInterfaceOrientation(.portrait)
         ContentView()
             .preferredColorScheme(.light)
     }
 }
-
