@@ -14,5 +14,5 @@ and Methodologies in Swift.
 SwiftUI, XCode
 
 ## Resources
-Lecture CS193p, Developing Applications for iOS using SwiftUI, from Stanford University
-[Course Materials](https://cs193p.stanford.edu)
+* Lecture CS193p, Developing Applications for iOS using SwiftUI, from Stanford University
+* [Course Materials](https://cs193p.stanford.edu)
