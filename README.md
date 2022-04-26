@@ -3,7 +3,7 @@ Swift app for iOS development. This repository contains files and documentation 
 Swift and XCode.
 
 ## Project
-To build an memorization game.
+To build a card-matching game (Memorize).
 
 ## Drivers
 To learn iOS development using Swift and XCode and to gain an understanding of XCode concepts, features, and settings and Swift core concepts: Struct, Views,
