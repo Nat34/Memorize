@@ -8,30 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
-     var emojis = ["✈️", "💄", "🎃", "🐋", "🦞", "🍅", "🥬", "🔦", "📪", "📦", "🕰", "🏔", "🚗", "🪚", "🐕", "🐈", "🚶🏼‍♀️", "🎉", "🏓", "💻", "🌓", "🌽", "💀", "🏝", "🐑", "🪐", "🧩"]
-    @State var emojiCount = 14
+    var cards: [String: [String]] =
+            [
+                "car": ["🚗", "🚙", "🏎", "🚕", "🚓", "🚘", "🚖", "🚔", "🚋", "🚠"],
+                "tshirt": ["🧢", "👙", "🧤", "🧣", "👗", "👚", "🥋", "👖", "🧥", "👕"],
+                "calendar": ["🖥", "🪑", "🛋", "🛌", "🍽", "🚪", "🪟", "💡"]
+            ]
+    
+    @State var _theme: String = "car"
+    @State var emojiCount = 8
 
     var body: some View {
         VStack {
             Text("Memorize!")
                 .font(.title)
                 .padding()
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                    ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
-                        CardView(content: emoji)
-                            .aspectRatio(2/3, contentMode: .fit)
-                    }
-                }
+            switch _theme {
+            case "car":
+                getTheme(theme: _theme)
+            case "tshirt":
+                getTheme(theme: _theme)
+            case "calendar":
+                getTheme(theme: _theme)
+            default:
+                getTheme(theme: "car")
             }
-            .foregroundColor(.red)
             Spacer()
             HStack {
-                getThemeButton(theme: "car", text: "Vehicles")
+                getChangeThemeButton(theme: "car", text: "Vehicles")
                 Spacer()
-                getThemeButton(theme: "tshirt", text: "Clothes")
+                getChangeThemeButton(theme: "tshirt", text: "Clothes")
                 Spacer()
-                getThemeButton(theme: "calendar", text: "Decor")
+                getChangeThemeButton(theme: "calendar", text: "Decor")
             }
             .font(.largeTitle)
             .padding()
@@ -39,13 +47,21 @@ struct ContentView: View {
         .padding(.horizontal)
     }
     
-    func changeTheme(theme: String) {
-        print("changing theme")
+    func getTheme(theme: String) -> some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+                ForEach(cards[theme]!.shuffled()[0..<emojiCount], id: \.self) { emoji in
+                    CardView(content: emoji)
+                        .aspectRatio(2/3, contentMode: .fit)
+                }
+            }
+        }
+        .foregroundColor(.red)
     }
     
-    func getThemeButton(theme: String, text: String) -> some View {
+    func getChangeThemeButton(theme: String, text: String) -> some View {
         Button {
-            changeTheme(theme: theme)
+            _theme = theme
         } label: {
             VStack {
                 Image(systemName: theme)
@@ -89,5 +105,6 @@ struct ContentView_Previews: PreviewProvider {
             .previewInterfaceOrientation(.portrait)
         ContentView()
             .preferredColorScheme(.light)
+            .previewInterfaceOrientation(.landscapeLeft)
     }
 }
