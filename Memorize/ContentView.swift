@@ -50,9 +50,11 @@ struct ContentView: View {
     func getTheme(theme: String) -> some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                ForEach(cards[theme]!.shuffled()[0..<emojiCount], id: \.self) { emoji in
-                    CardView(content: emoji)
-                        .aspectRatio(2/3, contentMode: .fit)
+                if let selectedTheme = cards[theme] {
+                    ForEach(selectedTheme.shuffled()[0..<emojiCount], id: \.self) { emoji in
+                        CardView(content: emoji)
+                            .aspectRatio(2/3, contentMode: .fit)
+                    }
                 }
             }
         }
