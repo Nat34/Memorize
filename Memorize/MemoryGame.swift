@@ -7,10 +7,20 @@
 
 import Foundation
 
-struct MemoryGame {
-    //var cards: Array<Card>
+struct MemoryGame<CardContent> {
+    private(set) var cards: Array<Card>
     
-    //func choose(card: Card) {
+    func choose(_ card: Card) {
         
-    //}
+    }
+    
+    init(numberOfPairsOfCards: Int ) {
+        cards = Array<Card>()
+    }
+    
+    struct Card {
+        var isFaceUp: Bool
+        var isMatched: Bool
+        var content: CardContent
+    }
 }
