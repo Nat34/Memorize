@@ -55,12 +55,12 @@
 		A2D8FB2B281779DB00A4F9D9 /* Memorize */ = {
 			isa = PBXGroup;
 			children = (
+				A265520E281E35A900B3F68C /* MemoryGame.swift */,
 				A2D8FB2C281779DB00A4F9D9 /* MemorizeApp.swift */,
 				A2D8FB2E281779DB00A4F9D9 /* ContentView.swift */,
 				A265521028221B2600B3F68C /* EmojiMemoryGame.swift */,
 				A2D8FB30281779DE00A4F9D9 /* Assets.xcassets */,
 				A2D8FB32281779DE00A4F9D9 /* Preview Content */,
-				A265520E281E35A900B3F68C /* MemoryGame.swift */,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
