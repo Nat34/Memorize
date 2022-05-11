@@ -8,57 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    var cards: [String: [String]] =
-            [
-                "car": ["🚗", "🚙", "🏎", "🚕", "🚓", "🚘", "🚖", "🚔", "🚋", "🚠"],
-                "tshirt": ["🧢", "👙", "🧤", "🧣", "👗", "👚", "🥋", "👖", "🧥", "👕"],
-                "calendar": ["🖥", "🪑", "🛋", "🛌", "🍽", "🚪", "🪟", "💡"]
-            ]
-    
+    @ObservedObject var viewModel: EmojiMemoryGame
     @State var _theme: String = "car"
-    @State var emojiCount = 8
-
-    var body: some View {
-        VStack {
-            Text("Memorize!")
-                .font(.title)
-                .padding()
-            switch _theme {
-            case "car":
-                getTheme(theme: _theme)
-            case "tshirt":
-                getTheme(theme: _theme)
-            case "calendar":
-                getTheme(theme: _theme)
-            default:
-                getTheme(theme: "car")
-            }
-            Spacer()
-            HStack {
-                getChangeThemeButton(theme: "car", text: "Vehicles")
-                Spacer()
-                getChangeThemeButton(theme: "tshirt", text: "Clothes")
-                Spacer()
-                getChangeThemeButton(theme: "calendar", text: "Decor")
-            }
-            .font(.largeTitle)
-            .padding()
-        }
-        .padding(.horizontal)
-    }
     
-    func getTheme(theme: String) -> some View {
+    var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                if let selectedTheme = cards[theme] {
-                    ForEach(selectedTheme.shuffled()[0..<emojiCount], id: \.self) { emoji in
-                        CardView(content: emoji)
-                            .aspectRatio(2/3, contentMode: .fit)
-                    }
+                ForEach(viewModel.cards) { card in
+                    CardView(card: card)
+                        .aspectRatio(2/3, contentMode: .fit)
+                        .onTapGesture {
+                            viewModel.choose(card)
+                        }
                 }
             }
         }
         .foregroundColor(.red)
+        .padding(.horizontal)
     }
     
     func getChangeThemeButton(theme: String, text: String) -> some View {
@@ -77,22 +43,18 @@ struct ContentView: View {
 
 
 struct CardView: View {
-    var content: String
-    @State var isFaceUp: Bool = true
-
+    let card: MemoryGame<String>.Card
+    
     var body: some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: 20)
-            if isFaceUp {
+            if card.isFaceUp {
                 shape.fill().foregroundColor(.white)
                 shape.strokeBorder(lineWidth: 3)
-                Text(content).font(.largeTitle)
+                Text(card.content).font(.largeTitle)
             } else {
                 shape.fill()
             }
-        }
-        .onTapGesture {
-            isFaceUp = !isFaceUp
         }
     }
 }
@@ -100,11 +62,12 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame()
+        ContentView(viewModel: game)
             .preferredColorScheme(.dark)
             .previewInterfaceOrientation(.portrait)
-        ContentView()
+        ContentView(viewModel: game)
             .preferredColorScheme(.light)
-            .previewInterfaceOrientation(.landscapeLeft)
+            .previewInterfaceOrientation(.portraitUpsideDown)
     }
 }
